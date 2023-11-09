@@ -22,10 +22,11 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  
- //res.send(JSON.stringify(books,null,4));
+ let booksResponse = {"books":books};
+ res.send(booksResponse);
  
  //Promise callbacks
+ /*
  let myPromise = new Promise((resolve,reject) => {
         resolve("Promise resolved")
     })
@@ -33,7 +34,7 @@ public_users.get('/',function (req, res) {
     myPromise.then((successMessage) => {
         console.log("From Callback " + successMessage)
         res.send(JSON.stringify(books,null,4));
-      })
+      })*/
 });
 
 // Get book details based on ISBN
@@ -55,16 +56,19 @@ myPromise.then((successMessage) => {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
     const author = req.params.author;
-    let book;
-    
-    /*var keys = Object.keys(books);
-    for (var i = 0; i < keys.length; i++) {
-        if (books[keys[i]].author==author)
-            book=books[keys[i]];
-    }
-    return res.send(book);*/
+    let booksbyauther=[];
 
-    let myPromise = new Promise((resolve,reject) => {
+    var keys = Object.keys(books);
+    for (var i = 0,j=0; i < keys.length; i++) {
+        if (books[keys[i]].author==author) {
+            booksbyauther[j++]={"isbn":keys[i],"title":books[keys[i]].title,"reviews":books[keys[i]].reviews};
+        }
+    }
+    let bookResponse = {"booksbyauther":booksbyauther};
+    return res.send(bookResponse);
+
+   /* 
+   let myPromise = new Promise((resolve,reject) => {
         var keys = Object.keys(books);
         for (var i = 0; i < keys.length; i++) {
             if (books[keys[i]].author==author)
@@ -76,19 +80,24 @@ public_users.get('/author/:author',function (req, res) {
     myPromise.then((book) => {
         res.send(book)
       })
-
+      */
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
-    let book;
-    /*var keys = Object.keys(books);
-    for (var i = 0; i < keys.length; i++) {
-        if (books[keys[i]].title==title)
-            book=books[keys[i]];
+    let booksbytitle=[];
+
+    var keys = Object.keys(books);
+    for (var i = 0,j=0; i < keys.length; i++) {
+        if (books[keys[i]].title==title) {
+            booksbytitle[j++]={"isbn":keys[i],"author":books[keys[i]].author,"reviews":books[keys[i]].reviews};
+        }
     }
-    return res.send(book);*/
+    let bookResponse = {"booksbytitle":booksbytitle};
+    return res.send(bookResponse);
+
+    /*
     let myPromise = new Promise((resolve,reject) => {
         var keys = Object.keys(books);
         for (var i = 0; i < keys.length; i++) {
@@ -101,6 +110,7 @@ public_users.get('/title/:title',function (req, res) {
     myPromise.then((book) => {
         res.send(book)
       })
+      */
 });
 
 //  Get book review
