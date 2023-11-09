@@ -22,38 +22,85 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  //Write your code here
- res.send(JSON.stringify(books,null,4));
+  
+ //res.send(JSON.stringify(books,null,4));
+ 
+ //Promise callbacks
+ let myPromise = new Promise((resolve,reject) => {
+        resolve("Promise resolved")
+    })
+
+    myPromise.then((successMessage) => {
+        console.log("From Callback " + successMessage)
+        res.send(JSON.stringify(books,null,4));
+      })
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
     const isbn = req.params.isbn;
+   // res.send(books[isbn])
+
+   let myPromise = new Promise((resolve,reject) => {
+    resolve("Promise resolved")
+})
+
+myPromise.then((successMessage) => {
+    console.log("From Callback " + successMessage)
     res.send(books[isbn])
+  })
+
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
     const author = req.params.author;
     let book;
-    var keys = Object.keys(books);
+    
+    /*var keys = Object.keys(books);
     for (var i = 0; i < keys.length; i++) {
         if (books[keys[i]].author==author)
             book=books[keys[i]];
     }
-    return res.send(book);
+    return res.send(book);*/
+
+    let myPromise = new Promise((resolve,reject) => {
+        var keys = Object.keys(books);
+        for (var i = 0; i < keys.length; i++) {
+            if (books[keys[i]].author==author)
+                book=books[keys[i]];
+        }
+        resolve(book)
+    })
+    
+    myPromise.then((book) => {
+        res.send(book)
+      })
+
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
     let book;
-    var keys = Object.keys(books);
+    /*var keys = Object.keys(books);
     for (var i = 0; i < keys.length; i++) {
         if (books[keys[i]].title==title)
             book=books[keys[i]];
     }
-    return res.send(book);
+    return res.send(book);*/
+    let myPromise = new Promise((resolve,reject) => {
+        var keys = Object.keys(books);
+        for (var i = 0; i < keys.length; i++) {
+            if (books[keys[i]].title==title)
+                book=books[keys[i]];
+        }
+        resolve(book)
+    })
+    
+    myPromise.then((book) => {
+        res.send(book)
+      })
 });
 
 //  Get book review
