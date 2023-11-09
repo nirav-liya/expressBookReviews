@@ -88,9 +88,9 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     if (isbn){
         delete reviews[userLoggedin]
         books[isbn].reviews = reviews;
-        res.send(`Review with the user : ${userLoggedin} deleted.`);
+        return res.status(200).send(`Review for the ISBN ${isbn} posted by the user ${userLoggedin} deleted.`);
     }
-    res.send(`Book not found with ISBN : ${isbn}`);
+    return res.send(`Book not found with ISBN : ${isbn}`);
 });
 
 module.exports.authenticated = regd_users;
