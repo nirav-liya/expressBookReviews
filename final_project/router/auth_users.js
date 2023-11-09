@@ -55,7 +55,7 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     let userLoggedin = req.user.username;
    
-    let updatedReview = req.body.review;
+    let updatedReview = req.query.review;
     
     const isbn = req.params.isbn;
     let book = books[isbn]
@@ -69,13 +69,13 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
             books[isbn].reviews = reviews;
             console.log(reviews);
             //return res.send(books);        
-            return res.status(200).send("Review successfully updated.");
+            return res.status(200).send(`Review for the book ISBN ${isbn} has been added/updated.`);
         }
     }
     reviews[userLoggedin] = {"review":updatedReview};
     books[isbn].reviews = reviews;
     //return res.send(books);
-    return res.status(200).send("Review successfully added.");
+    return res.status(200).send(`Review for the book ISBN ${isbn} has been added/updated.`);
 });
 
 // Delete a book review
